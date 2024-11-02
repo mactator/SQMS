@@ -8,8 +8,6 @@ export default async function Home() {
   await sleep(3000);
   return (
     <div>
-      
-
       <Link href={"/account"} className="btn btn-primary">
         {" "}
         Your Uncle
