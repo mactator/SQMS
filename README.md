@@ -2,6 +2,8 @@
 
 A simple queue management system built with React, Next.js, Hono, DaisyUI, ShadCN, and TailwindCSS. This project allows users to manage a queue of customers efficiently, providing separate interfaces for ticket dispensing, a waiting room display, and counters where tickets are called.
 
+Link for excalidraw: [https://excalidraw.com/#json=VnW5U22IFS2LK_AFE58_3,xZcJ0AnqZver_SaA1EHdLg]()
+
 ## Overview
 
 This queue management system consists of three main parts:
@@ -22,7 +24,7 @@ This queue management system consists of three main parts:
 
 ### Prerequisites
 
-- Node.js and npm should be installed on your machine.
+- Node.js and npm should be installed lon your machine.
 
 ### Installation
 
@@ -73,10 +75,10 @@ QUEUE_MANAGEMENT_SYSTEM/
 
 ## Key directories
 
-- ​**src/app**​: Contains the main pages, API routes, and layouts.
-- ​**src/components**​: Houses reusable React components.
-- ​**src/styles**​: Contains global and custom CSS files.
-- ​**public**​: For static assets.
+- **src/app**: Contains the main pages, API routes, and layouts.
+- **src/components**: Houses reusable React components.
+- **src/styles**: Contains global and custom CSS files.
+- **public**: For static assets.
 
 ## Basic Concepts
 
@@ -84,8 +86,8 @@ QUEUE_MANAGEMENT_SYSTEM/
 
 Next.js simplifies routing by using the file system. Each file in the `src/app` directory represents a route. Here’s how routing works in this project:
 
-- ​`ticket_dispenser/page.tsx`​: This file represents the `/ticket_dispenser` route for the ticket dispenser page.
-- `not-found.tsx`​: Used to handle 404 errors.
+- `ticket_dispenser/page.tsx`: This file represents the `/ticket_dispenser` route for the ticket dispenser page.
+- `not-found.tsx`: Used to handle 404 errors.
 
 To add a new page, create a folder inside `src/app` and add a `page.tsx` file within that folder. This will automatically create a new route. For example, `src/app/counter/page.tsx` would create a `/counter` route.
 
@@ -93,7 +95,7 @@ To add a new page, create a folder inside `src/app` and add a `page.tsx` file wi
 
 DaisyUI provides ready-to-use UI components that work with TailwindCSS. Each component in DaisyUI has predefined TailwindCSS class names that can be customized. Here are some examples:
 
-1. ​**Button**​:
+1. **Button**:
 
 ```jsx
 <button className="btn btn-primary">GetTicket</button>
@@ -118,9 +120,9 @@ For more information, check out the [DaisyUI documentation](https://daisyui.com/
 
 ## Pages and Components
 
-- ​**Counter Page**​: Each counter has a button to update the current ticket number. This is where the counter staff can serve the next customer by updating the display.
-- ​**Ticket Dispenser Page**​: This page generates a unique ticket number for arriving customers. After taking a ticket, customers move to the waiting room page.
-- ​**Waiting Room Page**​: Displays the current ticket being serviced at each counter, allowing customers to monitor their position in line.
+- **Counter Page**: Each counter has a button to update the current ticket number. This is where the counter staff can serve the next customer by updating the display.
+- **Ticket Dispenser Page**: This page generates a unique ticket number for arriving customers. After taking a ticket, customers move to the waiting room page.
+- **Waiting Room Page**: Displays the current ticket being serviced at each counter, allowing customers to monitor their position in line.
 
 ## Additional Resources
 
