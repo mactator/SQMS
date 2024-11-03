@@ -29,8 +29,8 @@ const Display: React.FC<DisplayProps> = ({
       transition={{ duration: 0.6, ease: "easeOut" }} // Smooth easing for bounce
     >
       <Container>
-        <div className="flex items-center space-x-4">
-          <span className="countdown font-mono text-6xl">
+        <div className="flex items-center space-x-4 ">
+          <span className="countdown font-mono text-6xl ">
             {counter} {/* Display the counter directly */}
           </span>
         </div>

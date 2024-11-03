@@ -6,7 +6,7 @@ export function Background() {
   return (
     <DotPattern
       className={
-        "[mask-image:radial-gradient(300px_circle_at_center,white,transparent)] -z-50 pointer-events-none"
+        "[mask-image:radial-gradient(300px_circle_at_center,white,transparent)] -z-10 pointer-events-none"
       }
     />
   );
