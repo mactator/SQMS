@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "moduleResolution":"node",
+    "allowSyntheticDefaultImports":true,
+    "skipLibCheck": true,
+    "baseUrl": "./src",
+    "target": "ES2022",
+    "strict": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    "outDir": "./dist",
+    "rootDir": "./src"
+  }
+}
