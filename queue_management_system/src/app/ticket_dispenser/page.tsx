@@ -23,13 +23,29 @@ const Page = () => {
       const data = await response.json();
 
       if (data.success && data.ticket) {
+        // Call the notification API
+        const notifyResponse = await fetch(
+          "http://localhost:3002/notify-queue/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ ticketNumber: data.ticket.number }),
+          }
+        );
+
+        if (!notifyResponse.ok) {
+          throw new Error("Failed to notify queue");
+        }
+
         // Navigate to the user page with the ticket number as a parameter
         router.push(`/user/${data.ticket.number}`);
       } else {
         throw new Error("Invalid response from server");
       }
     } catch (error) {
-      console.error("Error fetching ticket:", error);
+      console.error("Error:", error);
     }
   };
 

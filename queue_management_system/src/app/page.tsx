@@ -5,13 +5,6 @@ export default async function Home() {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  await sleep(2000);
-  return (
-    <div>
-      {/* <Link href={"/account"} className="btn btn-primary">
-        {" "}
-        Your Uncle
-      </Link> */}
-    </div>
-  );
+  await sleep(1000);
+  return <div></div>;
 }

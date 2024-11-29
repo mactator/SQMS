@@ -1,43 +1,61 @@
 "use client";
 import Display from "@/components/display";
-import Ticket from "@/components/ticket";
-import { div } from "framer-motion/client";
 import React from "react";
 
 const Page = () => {
-  const [counter, setCounter] = React.useState(0); // Initial counter value
+  const [counterValues, setCounterValues] = React.useState<
+    Record<string, number>
+  >({});
+  const [fullQueue, setFullQueue] = React.useState<{ number: number }[]>([]); // Ensure fullQueue structure matches expected API response
   const [isAnimating, setIsAnimating] = React.useState(false);
-  const [fullQueue, setFullQueue] = React.useState([]); // State to store the full queue
 
+  // Set up SSE for counter values
   React.useEffect(() => {
-    async function fetchQueue() {
+    const eventSource = new EventSource("http://localhost:3002/stream/");
+
+    eventSource.onmessage = (event) => {
       try {
-        const response = await fetch(
-          "http://localhost:3000/api/queue/fullQueue"
-        );
-        if (response.ok) {
-          const data = await response.json();
-          setFullQueue(data.queue);
-        } else {
-          console.error("Failed to fetch queue");
-        }
+        const data = JSON.parse(event.data); // Ensure data matches expected structure
+        console.log("Received SSE data:", data); // Debugging log
+        setCounterValues(data); // Replace entire state with the latest data
       } catch (error) {
-        console.error("Error fetching queue:", error);
+        console.error("Error parsing SSE data:", error);
       }
-    }
-    fetchQueue();
-  }, []); // Fetch queue on component mount
+    };
 
-  function simulateCounter() {
-    setTimeout(() => {
-      setCounter(counter + 1);
-    }, 5000);
-    if (counter > 99) {
-      setCounter(0);
-    }
-  }
+    eventSource.onerror = (error) => {
+      console.error("SSE connection error for counter values:", error);
+      eventSource.close();
+    };
 
-  simulateCounter();
+    return () => {
+      eventSource.close();
+    };
+  }, []);
+
+  // Set up SSE for the full queue
+  React.useEffect(() => {
+    const eventSource = new EventSource("http://localhost:3002/stream-queue/");
+
+    eventSource.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data); // Ensure data matches expected structure
+        console.log("Received SSE queue data:", data); // Debugging log
+        setFullQueue(data); // Replace entire state with the latest data
+      } catch (error) {
+        console.error("Error parsing SSE queue data:", error);
+      }
+    };
+
+    eventSource.onerror = (error) => {
+      console.error("SSE connection error for queue:", error);
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, []);
 
   return (
     <div>
@@ -46,52 +64,22 @@ const Page = () => {
           Waiting Room
         </h1>
         <div className="flex flex-row justify-evenly">
-          <Display
-            counter={counter}
-            isAnimating={isAnimating}
-            setIsAnimating={setIsAnimating}
-          />
-          <Display
-            counter={counter + 1}
-            isAnimating={isAnimating}
-            setIsAnimating={setIsAnimating}
-          />
-          <Display
-            counter={counter + 2}
-            isAnimating={isAnimating}
-            setIsAnimating={setIsAnimating}
-          />
-          <Display
-            counter={counter + 3}
-            isAnimating={isAnimating}
-            setIsAnimating={setIsAnimating}
-          />
-        </div>
-        <div className="flex flex-row justify-evenly">
-          <div className="card w-36 shadow-xl">
-            <div className="card-body text-center">
-              <h2 className="card-title text-2xl font-bold">Now Serving</h2>
-            </div>
-          </div>
-          <div className="card w-36 shadow-xl">
-            <div className="card-body text-center">
-              <h2 className="card-title text-2xl font-bold">Now Serving</h2>
-            </div>
-          </div>
-          <div className="card w-36 shadow-xl">
-            <div className="card-body text-center">
-              <h2 className="card-title text-2xl font-bold">Now Serving</h2>
-            </div>
-          </div>
-          <div className="card w-36 shadow-xl">
-            <div className="card-body text-center">
-              <h2 className="card-title text-2xl font-bold">Now Serving</h2>
-            </div>
-          </div>
+          {Object.keys(counterValues).length > 0 ? (
+            Object.entries(counterValues).map(([key, value]) => (
+              <Display
+                key={key}
+                counter={value}
+                isAnimating={isAnimating}
+                setIsAnimating={setIsAnimating}
+              />
+            ))
+          ) : (
+            <p className="text-center">No counters available...</p>
+          )}
         </div>
       </div>
-      <div className="flex-col items-center justify-center my-1"></div>
-      {/* Full Queue Component */}
+
+      {/* Full Queue Display */}
       <div className="mt-8 p-4">
         <h2 className="text-xl font-bold mb-4 text-center">Full Queue</h2>
         <div className="flex flex-wrap justify-center gap-4">

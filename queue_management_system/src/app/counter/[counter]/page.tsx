@@ -1,7 +1,10 @@
 "use client";
 import React from "react";
+import { useParams } from "next/navigation";
 
 const Page = () => {
+  const { counter } = useParams(); // Extract `counter` from params
+
   const handleNextCustomer = async () => {
     try {
       // Step 3.a: Call the first API to get the next ticket
@@ -31,7 +34,7 @@ const Page = () => {
         throw new Error("Invalid ticket data received.");
       }
 
-      // Step 3.b: Notify using the ticket number
+      // Step 3.b: Notify using the ticket number and counter from params
       const notifyResponse = await fetch("http://localhost:3002/notify/", {
         method: "POST",
         headers: {
@@ -41,7 +44,7 @@ const Page = () => {
           ticket: {
             number: ticketNumber,
           },
-          counter: "c2",
+          counter, // Use `counter` directly from params
         }),
       });
 
@@ -49,7 +52,9 @@ const Page = () => {
         throw new Error("Failed to notify.");
       }
 
-      alert(`Customer with ticket number ${ticketNumber} has been notified!`);
+      alert(
+        `Customer with ticket number ${ticketNumber} at counter ${counter} has been notified!`
+      );
     } catch (error) {
       console.error(error);
       alert(`Error: ${error}`);
