@@ -2,7 +2,7 @@
 import { easeIn, motion } from "framer-motion";
 import React from "react";
 
-const Ticket = () => {
+const TicketComponent = ({ number }: { number: string }) => {
   return (
     <motion.div
       drag
@@ -44,11 +44,11 @@ const Ticket = () => {
           {/* Vertical dashed line */}
           <div className="h-16 border-l-2 border-dashed border-gray-200 mx-2"></div>
           {/* Right side number */}
-          <div className="text-4xl font-bold text-white pr-4">5</div>
+          <div className="text-4xl font-bold text-white pr-4">{number}</div>
         </div>
       </div>
     </motion.div>
   );
 };
 
-export default Ticket;
+export default TicketComponent;

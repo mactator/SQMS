@@ -7,6 +7,26 @@ import React from "react";
 const Page = () => {
   const [counter, setCounter] = React.useState(0); // Initial counter value
   const [isAnimating, setIsAnimating] = React.useState(false);
+  const [fullQueue, setFullQueue] = React.useState([]); // State to store the full queue
+
+  React.useEffect(() => {
+    async function fetchQueue() {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/api/queue/fullQueue"
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setFullQueue(data.queue);
+        } else {
+          console.error("Failed to fetch queue");
+        }
+      } catch (error) {
+        console.error("Error fetching queue:", error);
+      }
+    }
+    fetchQueue();
+  }, []); // Fetch queue on component mount
 
   function simulateCounter() {
     setTimeout(() => {
@@ -70,8 +90,24 @@ const Page = () => {
           </div>
         </div>
       </div>
-      <div className="flex-col items-center justify-center  my-1">
-        <Ticket />
+      <div className="flex-col items-center justify-center my-1"></div>
+      {/* Full Queue Component */}
+      <div className="mt-8 p-4">
+        <h2 className="text-xl font-bold mb-4 text-center">Full Queue</h2>
+        <div className="flex flex-wrap justify-center gap-4">
+          {fullQueue.length > 0 ? (
+            fullQueue.map((ticket) => (
+              <div
+                key={ticket.number}
+                className="bg-gray-200 shadow-md p-4 rounded-lg text-center"
+              >
+                <p className="text-lg font-medium">Ticket #{ticket.number}</p>
+              </div>
+            ))
+          ) : (
+            <p>Loading queue...</p>
+          )}
+        </div>
       </div>
     </div>
   );

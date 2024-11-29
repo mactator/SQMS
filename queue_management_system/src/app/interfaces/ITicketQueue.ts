@@ -6,4 +6,7 @@ export interface ITicketQueue {
 
   // dequeue
   dequeu(): Promise<Ticket | null>;
+
+  // get the whole queue
+  getQueue(): Promise<Ticket[]>
 }

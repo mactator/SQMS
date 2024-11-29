@@ -34,10 +34,6 @@ app.onError((err, c) => {
     message: err.message,
   });
 });
-// Add the ticket router
-// app.route("/ticket", ticketRouter);
-
-// // Add the queue router
 
 app.route("/queue", queueRouter);
 

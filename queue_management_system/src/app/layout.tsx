@@ -2,7 +2,6 @@ import { Background } from "@/components/background";
 import Header from "@/components/header";
 import "@/styles/global.css";
 import type { Metadata } from "next";
-import "./test";
 
 export const metadata: Metadata = {
   title: "Hono | nextjs",

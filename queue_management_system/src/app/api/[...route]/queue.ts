@@ -6,7 +6,7 @@ const queueRouter = new Hono();
 
 queueRouter.post("/", async (c) => {
   const ticket = await ticketDispenserService.getNextTicket();
-  
+
   const success = await ticketQueueService.enqueu(ticket);
   if (success) {
     return c.json({ success: true, ticket });
@@ -31,5 +31,16 @@ queueRouter.get("/next", async (c) => {
     );
   }
 });
+
+queueRouter.get(
+  "/fullQueue", async (c) => {
+    try {
+      const queue = await ticketQueueService.getQueue();
+      return c.json({ queue: queue })
+    } catch (error) {
+
+    }
+  }
+)
 
 export default queueRouter;

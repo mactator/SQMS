@@ -2,7 +2,7 @@
   "name": "screensStreem",
   "type": "module",
   "scripts": {
-    "dev": "tsc && nodemon ./dist/index.js",
+    "dev": "nodemon ./dist/index.js",
     "build": "npm i && node ./dist/index.js"
   },
   "dependencies": {
