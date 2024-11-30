@@ -1,5 +1,8 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
+import { cors } from 'hono/cors'
+
+
 // import ticketRouter from "./ticket";
 import queueRouter from "./queue";
 import { ITicketQueue } from "@/app/interfaces/ITicketQueue";
@@ -11,6 +14,18 @@ import getRedisClient from "@/app/utils/redis";
 export const runtime = "nodejs";
 
 const app = new Hono().basePath("/api");
+
+app.use(
+  "/api/*",
+  cors({
+    origin: "*", // Allow all origins
+    allowHeaders: ["Content-Type", "Authorization"], // Allow these headers
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed methods
+    credentials: false, // Do not allow cookies or authorization headers by default
+  })
+);
+
+
 
 const redisClient = await getRedisClient();
 
@@ -35,7 +50,10 @@ app.onError((err, c) => {
   });
 });
 
+
 app.route("/queue", queueRouter);
+
+
 
 export const GET = handle(app);
 export const POST = handle(app);

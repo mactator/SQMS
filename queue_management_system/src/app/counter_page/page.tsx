@@ -1,16 +1,16 @@
 "use client";
 import React from "react";
+import { getApiBaseUrl } from "../utils/url";
 
 const Page = () => {
+  const apiBaseUrl = getApiBaseUrl();
   const handleNextCustomer = async () => {
     try {
       // Step 3.a: Call the first API to get the next ticket
-      const queueResponse = await fetch(
-        "http://localhost:3000/api/queue/next/"
-      );
+      const queueResponse = await fetch(`${apiBaseUrl}:3000/api/queue/next/`);
 
       // Call notify-queue API regardless of the response
-      await fetch("http://localhost:3002/notify-queue/", {
+      await fetch(`${apiBaseUrl}:3002/notify-queue/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,7 +32,7 @@ const Page = () => {
       }
 
       // Step 3.b: Notify using the ticket number
-      const notifyResponse = await fetch("http://localhost:3002/notify/", {
+      const notifyResponse = await fetch(`${apiBaseUrl}:3002/notify/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

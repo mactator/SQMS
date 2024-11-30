@@ -2,13 +2,15 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { getApiBaseUrl } from "../utils/url";
 
 const Page = () => {
+  const apiBaseUrl = getApiBaseUrl();
   const router = useRouter();
 
   const handleGetTicket = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/queue/", {
+      const response = await fetch(`${apiBaseUrl}:3000/api/queue/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -24,16 +26,13 @@ const Page = () => {
 
       if (data.success && data.ticket) {
         // Call the notification API
-        const notifyResponse = await fetch(
-          "http://localhost:3002/notify-queue/",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ ticketNumber: data.ticket.number }),
-          }
-        );
+        const notifyResponse = await fetch(`${apiBaseUrl}:3002/notify-queue/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ticketNumber: data.ticket.number }),
+        });
 
         if (!notifyResponse.ok) {
           throw new Error("Failed to notify queue");

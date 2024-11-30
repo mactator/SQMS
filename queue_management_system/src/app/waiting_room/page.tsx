@@ -1,6 +1,7 @@
 "use client";
 import Display from "@/components/display";
 import React from "react";
+import { getApiBaseUrl } from "../utils/url";
 
 const Page = () => {
   const [counterValues, setCounterValues] = React.useState<
@@ -8,10 +9,11 @@ const Page = () => {
   >({});
   const [fullQueue, setFullQueue] = React.useState<{ number: number }[]>([]); // Ensure fullQueue structure matches expected API response
   const [isAnimating, setIsAnimating] = React.useState(false);
+  const apiBaseUrl = getApiBaseUrl();
 
   // Set up SSE for counter values
   React.useEffect(() => {
-    const eventSource = new EventSource("http://localhost:3002/stream/");
+    const eventSource = new EventSource(`${apiBaseUrl}:3002/stream/`);
 
     eventSource.onmessage = (event) => {
       try {
@@ -35,7 +37,7 @@ const Page = () => {
 
   // Set up SSE for the full queue
   React.useEffect(() => {
-    const eventSource = new EventSource("http://localhost:3002/stream-queue/");
+    const eventSource = new EventSource(`${apiBaseUrl}:3002/stream-queue/`);
 
     eventSource.onmessage = (event) => {
       try {
