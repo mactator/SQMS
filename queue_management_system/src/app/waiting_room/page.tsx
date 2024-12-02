@@ -2,6 +2,7 @@
 import Display from "@/components/display";
 import React from "react";
 import { getApiBaseUrl } from "../utils/url";
+import FadingWaitingText from "@/components/fading_waiting_text";
 
 const Page = () => {
   const [counterValues, setCounterValues] = React.useState<
@@ -70,6 +71,7 @@ const Page = () => {
             Object.entries(counterValues).map(([key, value]) => (
               <Display
                 key={key}
+                counterName={key}
                 counter={value}
                 isAnimating={isAnimating}
                 setIsAnimating={setIsAnimating}
@@ -83,7 +85,7 @@ const Page = () => {
 
       {/* Full Queue Display */}
       <div className="mt-8 p-4">
-        <h2 className="text-xl font-bold mb-4 text-center">Full Queue</h2>
+        <FadingWaitingText></FadingWaitingText>
         <div className="flex flex-wrap justify-center gap-4">
           {fullQueue.length > 0 ? (
             fullQueue.map((ticket) => (
