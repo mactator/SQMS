@@ -1,19 +1,20 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "next/navigation";
-import { getApiBaseUrl } from "@/app/utils/url";
+import { getApiGatewayOrigin } from "@/app/utils/url";
 
 const Page = () => {
   const { counter } = useParams(); // Extract `counter` from params
-  const apiBaseUrl = getApiBaseUrl();
+  const apiBaseUrl = getApiGatewayOrigin();
+  const [error, setError] = useState()
 
   const handleNextCustomer = async () => {
     try {
       // Step 3.a: Call the first API to get the next ticket
-      const queueResponse = await fetch(`${apiBaseUrl}:3000/api/queue/next/`);
+      const queueResponse = await fetch(`${apiBaseUrl}/api/queue/next/`);
 
       // Call notify-queue API regardless of the response
-      await fetch(`${apiBaseUrl}:3002/notify-queue/`, {
+      fetch(`${process.env.NEXT_PUBLIC_STREAM_SERVICE}/notify-queue/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -35,18 +36,21 @@ const Page = () => {
       }
 
       // Step 3.b: Notify using the ticket number and counter from params
-      const notifyResponse = await fetch(`${apiBaseUrl}:3002/notify/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ticket: {
-            number: ticketNumber,
+      const notifyResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_STREAM_SERVICE}/notify/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           },
-          counter, // Use `counter` directly from params
-        }),
-      });
+          body: JSON.stringify({
+            ticket: {
+              number: ticketNumber,
+            },
+            counter, // Use `counter` directly from params
+          }),
+        }
+      );
 
       if (!notifyResponse.ok) {
         throw new Error("Failed to notify.");
@@ -57,7 +61,7 @@ const Page = () => {
       );
     } catch (error) {
       console.error(error);
-      alert(`Error: ${error}`);
+     // alert(`Error: ${error}`);
     }
   };
 

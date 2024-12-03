@@ -1,0 +1,14 @@
+{
+  "name": "api-gateway",
+  "scripts": {
+    "dev": "bun run --hot src/index.ts"
+  },
+  "dependencies": {
+    "api-gateway": "file:",
+    "hono": "^4.6.12",
+    "redis": "^4.7.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}

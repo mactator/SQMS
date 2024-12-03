@@ -1,4 +1,3 @@
-import React from "react";
 import "../styles/fading_text.css";
 
 const FadingWaitingText = () => {

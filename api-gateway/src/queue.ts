@@ -1,13 +1,21 @@
 import { Hono } from "hono";
-import { z } from "zod";
-import { ticketDispenserService, ticketQueueService } from "./route";
+import {
+  ticketDispenserService,
+  ticketQueueService,
+} from "./ticketQueueService";
 
 const queueRouter = new Hono();
 
 queueRouter.post("/", async (c) => {
+  console.log("HI Abo Sani");
+
   const ticket = await ticketDispenserService.getNextTicket();
 
   const success = await ticketQueueService.enqueu(ticket);
+  console.log({
+    ticket,
+    success,
+  });
   if (success) {
     return c.json({ success: true, ticket });
   } else {
@@ -32,15 +40,11 @@ queueRouter.get("/next", async (c) => {
   }
 });
 
-queueRouter.get(
-  "/fullQueue", async (c) => {
-    try {
-      const queue = await ticketQueueService.getQueue();
-      return c.json({ queue: queue })
-    } catch (error) {
-
-    }
-  }
-)
+queueRouter.get("/fullQueue", async (c) => {
+  try {
+    const queue = await ticketQueueService.getQueue();
+    return c.json({ queue: queue });
+  } catch (error) {}
+});
 
 export default queueRouter;

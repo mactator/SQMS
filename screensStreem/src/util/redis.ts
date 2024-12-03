@@ -6,7 +6,7 @@ const getRedisClient = async (): Promise<RedisClientType> => {
   if (!redis) {
     // Specify your Redis server details here
     redis = createClient({
-      url: "redis://localhost:6379", // Adjust the host and port if needed
+      url: process.env.REDIS, // Adjust the host and port if needed
     });
 
     try {

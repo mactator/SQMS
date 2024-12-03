@@ -1,4 +1,3 @@
-import Link from "next/link";
 
 export default async function Home() {
   function sleep(ms: number) {

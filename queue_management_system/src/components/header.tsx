@@ -1,16 +1,13 @@
 "use client";
 import { motion } from "framer-motion";
-import {
-  DashboardBrowsingIcon,
-  DashboardCircleIcon,
-  DoorIcon,
-  GridViewIcon,
-  ListViewIcon,
-} from "hugeicons-react";
+import { GridViewIcon } from "hugeicons-react";
 import React from "react";
 import Link from "next/link";
-
+let counters = 0;
 const Header = () => {
+  const goToCounterPage = () => {
+    open(`/counter_page/${++counters}`);
+  };
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
@@ -25,9 +22,9 @@ const Header = () => {
         <Link href="/waiting_room" className="btn btn-ghost">
           Waiting Room
         </Link>
-        <Link href="/counter_page" className="btn btn-ghost">
+        <button onClick={goToCounterPage} className="btn btn-ghost">
           Counter Page
-        </Link>
+        </button>
         <motion.button
           animate={{
             scale: [1, 1.1, 1],

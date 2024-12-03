@@ -1,7 +1,6 @@
 "use client";
 import Display from "@/components/display";
 import React from "react";
-import { getApiBaseUrl } from "../utils/url";
 import FadingWaitingText from "@/components/fading_waiting_text";
 
 const Page = () => {
@@ -10,11 +9,10 @@ const Page = () => {
   >({});
   const [fullQueue, setFullQueue] = React.useState<{ number: number }[]>([]); // Ensure fullQueue structure matches expected API response
   const [isAnimating, setIsAnimating] = React.useState(false);
-  const apiBaseUrl = getApiBaseUrl();
 
   // Set up SSE for counter values
   React.useEffect(() => {
-    const eventSource = new EventSource(`${apiBaseUrl}:3002/stream/`);
+    const eventSource = new EventSource(`${process.env.NEXT_PUBLIC_STREAM_SERVICE}/stream/`);
 
     eventSource.onmessage = (event) => {
       try {
@@ -38,7 +36,7 @@ const Page = () => {
 
   // Set up SSE for the full queue
   React.useEffect(() => {
-    const eventSource = new EventSource(`${apiBaseUrl}:3002/stream-queue/`);
+    const eventSource = new EventSource(`${process.env.NEXT_PUBLIC_STREAM_SERVICE}/stream-queue/`);
 
     eventSource.onmessage = (event) => {
       try {
