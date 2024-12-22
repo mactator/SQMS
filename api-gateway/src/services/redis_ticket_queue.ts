@@ -10,25 +10,33 @@ export class RedisTicketQueue implements ITicketQueue {
 
   async enqueu(ticket: Ticket): Promise<boolean> {
     try {
-      await this.redisClient.rPush("waiting_queue", JSON.stringify(ticket));
+      await this.redisClient.rPush(
+        `${Bun.env.BRANCH}:waiting_queue`,
+        JSON.stringify(ticket)
+      );
       return true;
     } catch (error) {
       return false;
     }
   }
   async dequeu(): Promise<Ticket | null> {
-    const value = await this.redisClient.lPop("waiting_queue");
+    const value = await this.redisClient.lPop(
+      `${Bun.env.BRANCH}:waiting_queue`
+    );
     return value ? (JSON.parse(value) as Ticket) : null;
   }
 
   async getQueue(): Promise<Ticket[]> {
     try {
-      const values = await this.redisClient.lRange("waiting_queue", 0, -1);
+      const values = await this.redisClient.lRange(
+        `${Bun.env.BRANCH}:waiting_queue`,
+        0,
+        -1
+      );
       return values.map((value) => JSON.parse(value) as Ticket);
     } catch (error) {
       console.error("Failed to retrieve queue:", error);
       return [];
     }
   }
-
 }

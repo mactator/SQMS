@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "nodemon ./dist/index.js",
     "build": "npm i && node ./dist/index.js",
-    "start": "node ./dist/index.js"
+    "start": "node ./dist/index.js --BRANCH 5001"
   },
   "dependencies": {
     "cors": "^2.8.5",
