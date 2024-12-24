@@ -22,6 +22,8 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { useRouter } from "next/navigation";
+ // For navigation
 
 const dashboardData = {
   user: {
@@ -31,11 +33,39 @@ const dashboardData = {
   },
   teams: [
     {
-      name: "Eventat Team",
+      name: "Branch Alqassim",
+      path: "5001",
+      logo: Activity, // Optional: Change to a branch-specific icon if desired
+      plan: "Production", // Description or role of the branch
+    },
+    {
+      name: "Branch Riyadh",
+      path: "5002", // Add a path for navigation
       logo: Activity,
-      plan: "Enterprise",
+      plan: "Staging",
+    },
+    {
+      name: "Branch Jeddah",
+      path: "5003", // Add a path for navigation
+      logo: Activity,
+      plan: "Testing",
+    },
+    {
+      name: "Branch Dammam",
+      path: "5004", // Add a path for navigation
+      logo: Activity,
+      plan: "Development",
+    },
+    {
+      name: "Branch Abha",
+      path: "5005", // Add a path for navigation
+      logo: Activity,
+      plan: "QA",
     },
   ],
+  
+  
+  branches: [5001, 5002, 5003, 5004, 5005], // List of branch ports
   navMain: [
     {
       title: "Dashboard Overview",
@@ -108,10 +138,19 @@ const dashboardData = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const router = useRouter(); // Use Next.js router for navigation
+
+  // Function to handle branch switching
+  const handleBranchSwitch = (branch: number) => {
+    // Navigate to the specific branch's dashboard overview
+    router.push(`/dashboard/${branch}/overview`);
+  };
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <TeamSwitcher teams={dashboardData.teams} />
+
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={dashboardData.navMain} />

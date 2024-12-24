@@ -1,7 +1,9 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ChevronsUpDown, Plus } from "lucide-react"
+import * as React from "react";
+import { useRouter, usePathname } from "next/navigation"; // For routing utilities
+import { ChevronsUpDown, Plus } from "lucide-react";
+import Link from "next/link";
 
 import {
   DropdownMenu,
@@ -11,25 +13,36 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 export function TeamSwitcher({
   teams,
 }: {
   teams: {
-    name: string
-    logo: React.ElementType
-    plan: string
-  }[]
+    name: string;
+    path: string;
+    logo: React.ElementType;
+    plan: string;
+  }[];
 }) {
-  const { isMobile } = useSidebar()
-  const [activeTeam, setActiveTeam] = React.useState(teams[0])
+  const router = useRouter();
+  const pathname = usePathname(); // Get the current route path
+  const currentBranch = pathname.split("/")[2]; // Extract [branch] from the URL
+  const initialTeam = teams.find((team) => team.path === currentBranch) || teams[0]; // Default to the first team if no match
+
+  const [activeTeam, setActiveTeam] = React.useState(initialTeam);
+
+  React.useEffect(() => {
+    // Update activeTeam if the route changes
+    const newTeam = teams.find((team) => team.path === currentBranch) || teams[0];
+    setActiveTeam(newTeam);
+  }, [pathname, teams, currentBranch]);
 
   return (
     <SidebarMenu>
@@ -55,24 +68,28 @@ export function TeamSwitcher({
           <DropdownMenuContent
             className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
             align="start"
-            side={isMobile ? "bottom" : "right"}
+            side="right"
             sideOffset={4}
           >
             <DropdownMenuLabel className="text-xs text-muted-foreground">
               Teams
             </DropdownMenuLabel>
             {teams.map((team, index) => (
-              <DropdownMenuItem
-                key={team.name}
-                onClick={() => setActiveTeam(team)}
-                className="gap-2 p-2"
-              >
-                <div className="flex size-6 items-center justify-center rounded-sm border">
-                  <team.logo className="size-4 shrink-0" />
-                </div>
-                {team.name}
-                <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
-              </DropdownMenuItem>
+              <Link key={team.name} href={`/dashboard/${team.path}/overview`} passHref>
+                <DropdownMenuItem
+                  asChild
+                  onClick={() => setActiveTeam(team)}
+                  className="gap-2 p-2"
+                >
+                  <a className="flex items-center gap-2">
+                    <div className="flex size-6 items-center justify-center rounded-sm border">
+                      <team.logo className="size-4 shrink-0" />
+                    </div>
+                    {team.name}
+                    <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
+                  </a>
+                </DropdownMenuItem>
+              </Link>
             ))}
             <DropdownMenuSeparator />
             <DropdownMenuItem className="gap-2 p-2">
@@ -85,5 +102,5 @@ export function TeamSwitcher({
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
-  )
+  );
 }
